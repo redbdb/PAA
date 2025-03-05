@@ -9,17 +9,6 @@
 
 using namespace std;
 
-//.\gustavoassuncao_202300083453_transportadora.exe entradatranspf.txt saidatransp.txt
-//.\gustavoassuncao_202300083453_transportadora.exe entradatransp.txt saidatransp.txt
-
-/*
-[AAA1234]R$100.00,49KG(98%),10L(10%)->IJ777888999KL
-[BBB5C67]R$5265.03,1250KG(63%),12000L(100%)->EF444555666GH,MN000111222OP,QR333444555ST
-PENDENTE:R$49.99,2KG,1L->AB111222333CD
-*/
-
-//reduzir tempo
-
 struct Carro{
     string Placa;
     int Peso;
@@ -35,7 +24,7 @@ struct Pacote{
 };
 
 int main(int argc, char const *argv[]){
-    auto inicio = std::chrono::high_resolution_clock::now();
+    
     ifstream entrada(argv[1]);
     ofstream saida(argv[2]);
     
@@ -79,16 +68,14 @@ int main(int argc, char const *argv[]){
     int SomaVolume = 0;
     string SomaNome = "";
 
-    //int sla1 = 0, sla2 = 0, sla3 = 0;
 
-    for(int i = 0; i < TotalCarros; i++){//otimizar isso
+    for(int i = 0; i < TotalCarros; i++){
         saida << "[" << ListaCarros[i].Placa << "]R$";
 
         x = TotalItens;
         y = ListaCarros[i].Peso;
         z = ListaCarros[i].Volume;
 
-        //ordena a matriz com todos os que ainda nao foram enviados
         for(int i = 0; i <= x; i++){
             for(int j = 0; j <= y; j++){
                 for(int k = 0; k <= z; k++){
@@ -109,7 +96,6 @@ int main(int argc, char const *argv[]){
             }
         }
         
-        //lê a matriz
         while (x > 0){
             if((Matriz[x][y][z] != Matriz[x-1][y][z])){   
                 ListaItens[x-1].Enviado = true;
@@ -123,7 +109,6 @@ int main(int argc, char const *argv[]){
             x--;
         }
         
-        //formata a linha de saida
         SomaNome.erase(0,1);
         saida << fixed << setprecision(2) << SomaValor << "," << SomaPeso << "KG(" << (int)round(SomaPeso*100.0/ListaCarros[i].Peso) << "%)," << SomaVolume << "L(" << (int)round(SomaVolume*100.0/ListaCarros[i].Volume) << "%)->" << SomaNome;
         saida << endl;
@@ -154,13 +139,6 @@ int main(int argc, char const *argv[]){
     }
 
     delete[] Matriz; 
-    
-    auto fim = std::chrono::high_resolution_clock::now();
-
-    // Calcula a duração
-    auto duracao = std::chrono::duration_cast<std::chrono::milliseconds>(fim - inicio);
-
-    std::cout << "Tempo de execução: " << duracao.count() << " ms" << std::endl;
 
     return 0;
 }

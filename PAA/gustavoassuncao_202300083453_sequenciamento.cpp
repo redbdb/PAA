@@ -6,8 +6,6 @@
 
 using namespace std;
 
-//.\gustavoassuncao_202300083453_sequenciamento.exe entradaseq.txt saidaseq.txt
-
 float acc = 0;
 
 struct doenca{
