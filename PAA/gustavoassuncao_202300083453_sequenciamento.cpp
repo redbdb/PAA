@@ -6,9 +6,12 @@
 
 using namespace std;
 
+//.\gustavoassuncao_202300083453_sequenciamento.exe entradaseq.txt saidaseq.txt
+
 float acc = 0;
 
 struct doenca{
+    int pos;
     string id;
     int nGenes;
     string* Genes;
@@ -65,10 +68,16 @@ void merge(doenca* lista, doenca* aux, int inicio, int meio, int fim){
     int cont = inicio;
     
     while(cont1 <= meio && cont2 <= fim){
-        if(aux[cont1].porcentagem >= aux[cont2].porcentagem)
+        if(aux[cont1].porcentagem > aux[cont2].porcentagem)
             lista[cont++] = aux[cont1++];
-        else if(aux[cont1].porcentagem <= aux[cont2].porcentagem)
+        else if(aux[cont1].porcentagem < aux[cont2].porcentagem)
             lista[cont++] = aux[cont2++];
+        else{
+            if(aux[cont1].pos < aux[cont2].pos)
+                lista[cont++] = aux[cont1++];
+            else
+                lista[cont++] = aux[cont2++];
+        }
     }
 
     while(cont1 <= meio)
@@ -102,6 +111,7 @@ int main(int argc, char const *argv[]){
     doenca ListaDoencas[NumDoencas];
 
     for (int i = 0; i < NumDoencas; i++){
+        ListaDoencas[i].pos = i;
         entrada >> ListaDoencas[i].id;
         entrada >> ListaDoencas[i].nGenes;
         ListaDoencas[i].Genes = new string[ListaDoencas[i].nGenes];
@@ -116,7 +126,7 @@ int main(int argc, char const *argv[]){
             int m = ListaDoencas[i].Genes[j].length();
             KMP(K ,Codigo ,ListaDoencas[i].Genes[j], TamanhoSubcadeia, 0, m);
         }
-        ListaDoencas[i].porcentagem = (acc*100/ListaDoencas[i].nGenes);
+        ListaDoencas[i].porcentagem = round(acc*100/ListaDoencas[i].nGenes);
         acc = 0;
     }
 
@@ -124,7 +134,7 @@ int main(int argc, char const *argv[]){
     mergeSort(ListaDoencas, aux, 0, NumDoencas - 1);
 
     for(int i = 0; i < NumDoencas; i++){
-        saida << ListaDoencas[i].id << "->" << round(ListaDoencas[i].porcentagem) << "%" << endl;
+        saida << ListaDoencas[i].id << "->" << ListaDoencas[i].porcentagem << "%" << endl;
     }
 
 

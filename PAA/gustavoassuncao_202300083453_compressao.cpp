@@ -18,43 +18,36 @@ using namespace std;
 3->HUF(25.00%)=C0
 */
 
-//conversao errada ou montagem da arvore(com as mesmas entradas é possivel criar uma arvore diferente que mude o resultado?)
-
 struct Seq{
     string* hexa;
     int nHexa;
-    float pHUF;
+    float pHUF= 100000;
     float pRLE;
     string HUF;
     string RLE;
 };
 
-string RLE(string* lista, int tamanho){
-    string var, saida = "";
+string RLE(string* lista, int tamanho){//OTIMIZAR?
+    string repetido;
     int cont;
-    stringstream ss;
+    stringstream saida;
 
     for(int i = 0; i < tamanho; i++){
-        var = lista[i];
+        repetido = lista[i];
         cont = 1;
-        ss.str("");
-        ss.clear();
 
         while(lista[i] == lista[i+1] && i + 1 < tamanho){
             i++;
             cont++;
         }
-        if(cont < 16){
-            ss << uppercase << hex << cont;
-            saida = saida + "0" + ss.str() + var;
-        }
-        else{
-            ss << uppercase << hex << cont;
-            saida = saida + ss.str() + var;
-        }
-           
+        
+        if(cont < 16)
+            saida << uppercase << "0" << hex << cont << repetido;
+        else
+            saida << uppercase << hex << cont << repetido;
+         
     }
-    return saida;
+    return saida.str();
 }
 
 //HUF abaixo
@@ -106,7 +99,7 @@ no* extrair_min(fila_p_min* fpm){
     return saida;
 }
 
-no* construir_arvore(int H[], int n) {//verificar lógica, pode estra montando resultado errado
+no* construir_arvore(int H[], int n) {
     
     fila_p_min* fpm = new fila_p_min;
     fpm->inicio = NULL;
@@ -139,7 +132,7 @@ void construir_tabela(no* raiz, string cod,string* tabela){
     construir_tabela(raiz->E, cod + "0", tabela);
 }
 
-string compactar(string* lista, string* tabela, int tamanho){//adicionar 0's para fechar 8 bits antes de converter no fim, desconsidera 0's antes d primeiro 1? converte a cada 8
+string compactar(string* lista, string* tabela, int tamanho){//converte a cada 4 bits do conversor e manda pra saida, se encerrar verifica se falta numeros para completar 0, e converte
     string saida = "";
     string conversor = "";
     stringstream ss;
@@ -200,10 +193,11 @@ int main(int argc, char const *argv[]){
     }
 
     for(int i = 0; i < NumSeq; i++){
+        cout << i << endl;
         Sequencias[i].RLE = RLE(Sequencias[i].hexa, Sequencias[i].nHexa);
         Sequencias[i].pRLE = 100*(((float)Sequencias[i].RLE.length())/(float)(2*Sequencias[i].nHexa));
-        Sequencias[i].HUF = HUF(Sequencias[i].hexa, Sequencias[i].nHexa);
-        Sequencias[i].pHUF = 100*(((float)Sequencias[i].HUF.length())/(float)(2*Sequencias[i].nHexa));
+        //Sequencias[i].HUF = HUF(Sequencias[i].hexa, Sequencias[i].nHexa);
+        //Sequencias[i].pHUF = 100*(((float)Sequencias[i].HUF.length())/(float)(2*Sequencias[i].nHexa));
     }
 
     for(int i = 0; i < NumSeq; i++){
