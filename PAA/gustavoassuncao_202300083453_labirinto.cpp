@@ -8,22 +8,19 @@ using namespace std;
 
 //.\gustavoassuncao_202300083453_labirinto.exe entradaf.txt saida.txt
 
-/*
-L0:INI@2,2|F->1,2|D->1,3|BT@1,3->1,2|E->1,1|T->2,1|BT@2,1->1,1|BT@1,1->1,2|BT@1,2->2,2|T->3,2|FIM@3,2
-L1:INI@1,1|T->2,1|BT@2,1->1,1|FIM@-,-
-*/
-
 bool BackTrack(int x, int y, int Largura, int Altura, char** Matriz, ofstream &saida)//ajustar saida de BT e verificar lógica
 {   
-    if(x == 0 || x == Largura - 1 || y == 0 || y == Altura - 1)
+    if(x == 0 || x == Largura - 1 || y == 0 || y == Altura - 1){
+        saida << "|FIM@" << y << "," << x;
         return true;
+    }
+        
     
     Matriz[x][y] = '1';
 
     if(Matriz[x + 1][y] == '0'){
         saida << "|D->" << y << "," << x + 1;
         if(BackTrack(x + 1, y, Largura, Altura, Matriz, saida)){
-            saida << "|FIM@" << y << "," << x + 1;
             return true;
         }else{
             saida << "|BT@" << y << "," << x + 1 << "->" << y << "," << x; 
@@ -34,7 +31,6 @@ bool BackTrack(int x, int y, int Largura, int Altura, char** Matriz, ofstream &s
     if(Matriz[x][y - 1] == '0'){
         saida << "|F->" << y - 1 << "," << x;
         if(BackTrack(x, y - 1, Largura, Altura, Matriz, saida)){
-            saida << "|FIM@" << y - 1 << "," << x;
             return true;
         }else{
             saida << "|BT@" << y - 1 << "," << x << "->" << y << "," << x;
@@ -44,7 +40,6 @@ bool BackTrack(int x, int y, int Largura, int Altura, char** Matriz, ofstream &s
     if(Matriz[x - 1][y] == '0'){
         saida << "|E->" << y << "," << x - 1;
         if(BackTrack(x - 1 , y, Largura, Altura, Matriz, saida)){
-            saida << "|FIM@" << y << "," << x - 1;
             return true;
         }else{
             saida << "|BT@" << y << "," << x - 1 << "->" << y << "," << x;
@@ -54,7 +49,6 @@ bool BackTrack(int x, int y, int Largura, int Altura, char** Matriz, ofstream &s
     if(Matriz[x][y + 1] == '0'){
         saida << "|T->" << y + 1 << "," << x;
         if(BackTrack(x, y + 1, Largura, Altura, Matriz, saida)){
-            saida << "|FIM@" << y + 1 << "," << x;
             return true;
         }else{
             saida << "|BT@" << y + 1 << "," << x << "->" << y << "," << x;

@@ -218,7 +218,6 @@ int main(int argc, char *argv[]){
         
         mergeSort(lista[i], aux2, 1, 6);
 
-        
     }
     
     for(int i = 0; i < totalListas; i++){

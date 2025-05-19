@@ -21,7 +21,7 @@ using namespace std;
 struct Seq{
     string* hexa;
     int nHexa;
-    float pHUF= 100000;
+    float pHUF = 100000;
     float pRLE;
     string HUF;
     string RLE;
@@ -184,7 +184,7 @@ int main(int argc, char const *argv[]){
 
     Seq Sequencias[NumSeq];
 
-    for(int i = 0; i < NumSeq; i++){
+    for(int i = 0; i < NumSeq; i++){//salva em lista de strings cada numero de hexadecimal, TENTAR IMPLEMENTAR RLE AQUI
         entrada >> Sequencias[i].nHexa;
         Sequencias[i].hexa = new string[Sequencias[i].nHexa];
         for(int j = 0; j < Sequencias[i].nHexa; j++){
